@@ -33,6 +33,8 @@ export class UploaderPage implements OnInit {
 			})
 		})
 
+		
+
 	}
 
 	fileChanged(event) {
