@@ -6,7 +6,10 @@
 
 <ion-content padding>
 
-	<div class="center">
+
+	<app-loading *ngIf="busy"></app-loading>
+
+	<div class="center" *ngIf="!busy">
 		<div class="camera"></div>
 
 		<input type="file" *ngIf="!imageURL" (change)="fileChanged($event)" class="filebtn" #fileButton />
