@@ -9,7 +9,7 @@
 	<app-loading *ngIf="!post"></app-loading>
 
 	<ion-card *ngIf="post as postData">
-		<ion-img src="https://ucarecdn.com/{{ postID }}/"></ion-img>
+		<ion-img src="https://ucarecdn.com/{{ postID }}/-/preview/{{ effect }}"></ion-img>
 		<ion-card-content>
 			<p>{{ postData.desc }}</p>
 		</ion-card-content>

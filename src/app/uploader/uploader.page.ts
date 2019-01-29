@@ -15,7 +15,19 @@ export class UploaderPage implements OnInit {
 
 	imageURL: string
 	desc: string
-
+	noFace: boolean = false
+	
+	scaleCrop: string = '-/scale_crop/200x200'
+	
+	effects = {
+		effect1: '',
+		effect2: '-/exposure/50/-/saturation/50/-/warmth/-30/',
+		effect3: '-/filter/vevera/150/',
+		effect4: '-/filter/carris/150/',
+		effect5: '-/filter/misiara/150/'
+	}
+	
+	activeEffect: string = this.effects.effect1
 	busy: boolean = false
 
 	@ViewChild('fileButton') fileButton
@@ -34,16 +46,18 @@ export class UploaderPage implements OnInit {
 		this.busy = true
 
 		const image = this.imageURL
+		const activeEffect = this.activeEffect
 		const desc = this.desc
 
 		this.afstore.doc(`users/${this.user.getUID()}`).update({
-			posts: firestore.FieldValue.arrayUnion(image)
+			posts: firestore.FieldValue.arrayUnion(`${image}/${activeEffect}`)
 		})
 
 		this.afstore.doc(`posts/${image}`).set({
 			desc,
 			author: this.user.getUsername(),
-			likes: []
+			likes: [],
+			effect: activeEffect
 		})
 		
 		this.busy = false
@@ -61,6 +75,10 @@ export class UploaderPage implements OnInit {
 		await alert.present()
 
 		this.router.navigate(['/tabs/feed'])
+	}
+
+	setSelected(effect: string) {
+		this.activeEffect = this.effects[effect]
 	}
 
 	uploadFile() {
@@ -83,6 +101,10 @@ export class UploaderPage implements OnInit {
 			console.log(event)
 			this.imageURL = event.json().file
 			this.busy = false
+			this.http.get(`https://ucarecdn.com/${this.imageURL}/detect_faces/`)
+			.subscribe(event => {
+				this.noFace = event.json().faces == 0
+			})
 		})
 	}
 

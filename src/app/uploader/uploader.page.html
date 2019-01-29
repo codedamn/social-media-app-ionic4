@@ -16,12 +16,43 @@
 
 		<ion-button shape="round" color="primary" (click)="uploadFile()" *ngIf="!imageURL" fill="outline">Upload File</ion-button>
 
-		<ion-card *ngIf="imageURL">
-			<img src="https://ucarecdn.com/{{ imageURL }}/" />
-			<ion-card-content>
-				<ion-textarea placeholder="Enter some description" [(ngModel)]="desc"></ion-textarea>
-				<ion-button shape="round" color="primary" (click)="createPost()">POST</ion-button>
-			</ion-card-content>
-		</ion-card>
+		<div *ngIf="imageURL">
+			<ion-grid>
+				<ion-row>
+					<ion-col size="12">
+						<ion-img src="https://ucarecdn.com/{{ imageURL }}/-/preview/{{ activeEffect }}"></ion-img>
+						<ion-card-content>
+							<ion-textarea placeholder="Enter some description" [(ngModel)]="desc"></ion-textarea>
+							<ion-button shape="round" color="primary" (click)="createPost()">POST</ion-button>
+						</ion-card-content>
+					</ion-col>
+				</ion-row>
+
+				<ion-row>
+					<ion-col [class.active]="activeEffect==effects.effect1" (click)="setSelected('effect1')">
+						<ion-img src="https://ucarecdn.com/{{ imageURL }}/{{ scaleCrop }}/"></ion-img>
+					</ion-col>
+					<ion-col [class.active]="activeEffect==effects.effect2" (click)="setSelected('effect2')">
+						<ion-img src="https://ucarecdn.com/{{ imageURL }}/{{ scaleCrop }}/{{ effects.effect2 }}"></ion-img>
+					</ion-col>
+					<ion-col [class.active]="activeEffect==effects.effect3" (click)="setSelected('effect3')">
+						<ion-img src="https://ucarecdn.com/{{ imageURL }}/{{ scaleCrop }}/{{ effects.effect3 }}"></ion-img>
+					</ion-col>
+					<ion-col [class.active]="activeEffect==effects.effect4" (click)="setSelected('effect4')">
+						<ion-img src="https://ucarecdn.com/{{ imageURL }}/{{ scaleCrop }}/{{ effects.effect4 }}"></ion-img>
+					</ion-col>
+					<ion-col [class.active]="activeEffect==effects.effect5" (click)="setSelected('effect5')">
+						<ion-img src="https://ucarecdn.com/{{ imageURL }}/{{ scaleCrop }}/{{ effects.effect5 }}"></ion-img>
+					</ion-col>
+				</ion-row>
+
+				<ion-row *ngIf="noFace">
+					<ion-col size="12">
+						<p class="no-face">Images with faces perform 150 times better!</p>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
+
+		</div>
 	</div>
 </ion-content>
