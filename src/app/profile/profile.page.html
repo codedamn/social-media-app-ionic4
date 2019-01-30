@@ -6,9 +6,24 @@
 
 <ion-content padding>
 
-	<app-loading *ngIf="!userPosts"></app-loading>
+	<app-loading *ngIf="!posts"></app-loading>
 
-	<div id="images" *ngIf="(userPosts | async)?.posts as posts">
+	<div id="profile-info" *ngIf="username">
+		<ion-grid>
+			<ion-row>
+				<ion-col size="4" class="user-image">
+					<ion-img src="https://ucarecdn.com/{{ profilePic }}/-/scale_crop/200x200/center/"></ion-img>
+				</ion-col>
+				<ion-col size="8">
+					<p>{{ username }}</p>
+					<ion-button shape="round" color="primary" routerLink="/tabs/edit-profile">Edit Profile</ion-button>
+				</ion-col>
+			</ion-row>
+		</ion-grid>
+	</div>
+
+
+	<div id="images" *ngIf="posts">
 		<div class="image" *ngFor="let post of posts">
 			<img (click)="goTo(post)" class="main-image" src="https://ucarecdn.com/{{ post }}/-/scale_crop/200x200/center/" />
 		</div>

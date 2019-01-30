@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore'
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore'
 import { UserService } from '../user.service';
 import { Router } from '@angular/router';
 
@@ -10,11 +10,24 @@ import { Router } from '@angular/router';
 })
 export class ProfilePage implements OnInit {
 
+	mainuser: AngularFirestoreDocument
 	userPosts
+	sub
+	posts
+	username: string
+	profilePic: string
 
 	constructor(private afs: AngularFirestore, private user: UserService, private router: Router) {
-		const posts = afs.doc(`users/${user.getUID()}`)
-		this.userPosts = posts.valueChanges()
+		this.mainuser = afs.doc(`users/${user.getUID()}`)
+		this.sub = this.mainuser.valueChanges().subscribe(event => {
+			this.posts = event.posts
+			this.username = event.username
+			this.profilePic = event.profilePic
+		})
+	}
+
+	ngOnDestroy() {
+		this.sub.unsubscribe()
 	}
 
 	goTo(postID: string) {
